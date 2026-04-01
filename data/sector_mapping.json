@@ -1,0 +1,27 @@
+{
+  "SANTE & NUTRITION": "health_nutrition",
+  "SANTE & NUT": "health_nutrition",
+  "HEALTH & NUTRITION": "health_nutrition",
+  "HEALTH & NUT": "health_nutrition",
+
+  "EAU, HYGIENE, ASSAINISSEMENT": "wash",
+  "EHA": "wash",
+  "WATER, HYGIENE AND SANITATION": "wash",
+  "WASH": "wash",
+
+  "SECURITE ALIMENTAIRE & MOYENS D’EXISTENCE": "food_security_livelihoods",
+  "SECURITE ALIMENTAIRE & MOYENS D'EXISTENCE": "food_security_livelihoods",
+  "SAME": "food_security_livelihoods",
+  "FOOD SECURITY & LIVELIHOODS": "food_security_livelihoods",
+  "FSL": "food_security_livelihoods",
+
+  "SANTE MENTALE, SOUTIEN PSYCHOSOCIAL ET PROTECTION": "mhpss_protection",
+  "SMSP": "mhpss_protection",
+  "MENTAL HEALTH, PSYCHOSOCIAL SUPPORT AND PROTECTION": "mhpss_protection",
+  "MENTAL HEALTH, PSYCHOSOCIAL SUPPORT, AND PROTECTION": "mhpss_protection",
+  "MHPSS": "mhpss_protection",
+
+  "DRR": "drr",
+  "ADVOCACY": "advocacy",
+  "PLAIDOYER": "advocacy"
+}
