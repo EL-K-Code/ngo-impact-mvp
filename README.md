@@ -1,5 +1,3 @@
-
-````markdown
 # NGO Impact Report Standardizer
 
 A Streamlit-based MVP that ingests NGO impact-report PDFs, extracts structured information, normalizes the data into a standard schema, and generates a standardized PDF brief through a LaTeX pipeline.
