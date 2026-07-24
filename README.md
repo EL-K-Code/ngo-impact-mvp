@@ -1,110 +1,150 @@
+<div align="center">
+
 # NGO Impact Report Standardizer
 
-A Streamlit-based MVP that ingests NGO impact-report PDFs, extracts structured information, normalizes the data into a standard schema, and generates a standardized PDF brief through a LaTeX pipeline.
+### Document intelligence pipeline for structured extraction and standardized reporting
 
-## Overview
+This project transforms heterogeneous NGO impact-report PDFs into a normalized JSON representation and a standardized PDF brief generated through a LaTeX pipeline.
 
-This project was built as a local MVP to test one core idea:
+![Python](https://img.shields.io/badge/Python-Document%20Pipeline-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-Interactive%20MVP-FF4B4B?logo=streamlit&logoColor=white)
+![LaTeX](https://img.shields.io/badge/LaTeX-Automated%20Reporting-008080?logo=latex&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Working%20Local%20MVP-2E8B57)
 
-> multiple NGO PDF reports can be transformed into a clean, structured, reusable editorial output.
-
-The application currently:
-- uploads one or more PDF reports,
-- extracts text and structured signals,
-- normalizes the extracted content into a standard JSON payload,
-- renders a LaTeX template,
-- compiles a PDF brief,
-- previews the result inside Streamlit,
-- lets the user download the generated PDF, LaTeX, and normalized JSON.
-
-## Main features
-
-- PDF upload from the Streamlit interface
-- Extraction and section detection from source PDFs
-- Standardized internal JSON payload
-- LaTeX rendering with Jinja2
-- PDF generation through `pdflatex`
-- In-app preview
-- Download buttons for:
-  - generated PDF
-  - generated LaTeX
-  - normalized JSON
-
-## Tech stack
-
-- **Frontend**: Streamlit
-- **Backend / pipeline**: Python
-- **PDF parsing**: PyMuPDF (`fitz`)
-- **Templating**: Jinja2
-- **Data handling**: pandas
-- **PDF output**: LaTeX / pdfLaTeX
+</div>
 
 ---
 
-# Project structure
+## Problem
+
+Impact reports are often valuable but difficult to compare or reuse because each organization chooses its own structure, vocabulary, indicators and visual format.
+
+This MVP explores a reusable workflow for converting those reports into:
+
+- extracted text and sections;
+- a standardized internal schema;
+- structured JSON data;
+- a consistent editorial brief;
+- downloadable PDF and LaTeX artifacts.
+
+The goal is not to replace human program evaluation. It is to reduce repetitive document-processing work and make extracted information easier to review.
+
+---
+
+## Current workflow
+
+```mermaid
+flowchart LR
+    A[NGO PDF reports] --> B[Text extraction]
+    B --> C[Section detection]
+    C --> D[Normalization]
+    D --> E[Schema validation]
+    E --> F[LaTeX rendering]
+    F --> G[PDF compilation]
+    G --> H[Preview and downloads]
+```
+
+A user can upload one or more reports through Streamlit, run the pipeline and inspect:
+
+- the generated standardized PDF;
+- the normalized JSON payload;
+- extracted indicators;
+- the generated LaTeX source;
+- compilation logs when errors occur.
+
+---
+
+## Implemented capabilities
+
+- upload of one or more PDF reports;
+- text extraction with PyMuPDF;
+- section-detection logic;
+- normalization into a shared JSON payload;
+- validation before rendering;
+- Jinja2-based LaTeX templating;
+- PDF compilation through `pdflatex`;
+- in-application preview;
+- downloads for PDF, LaTeX and JSON outputs;
+- generation of logs for compilation troubleshooting.
+
+---
+
+## Technology stack
+
+| Layer | Technology |
+| --- | --- |
+| Interface | Streamlit |
+| Pipeline | Python |
+| PDF extraction | PyMuPDF / `fitz` |
+| Data handling | pandas |
+| Templating | Jinja2 |
+| Report rendering | LaTeX / pdfLaTeX |
+| Structured payload | JSON |
+
+---
+
+## Repository structure
 
 ```text
 ngo-impact-mvp/
 ├── app.py
 ├── pipeline/
 │   ├── pipeline.py
-│   ├── render_latex.py
-│   ├── compile_pdf.py
 │   ├── extract.py
 │   ├── detect_sections.py
 │   ├── normalize.py
-│   └── validate.py
+│   ├── validate.py
+│   ├── render_latex.py
+│   └── compile_pdf.py
 ├── templates/
 │   └── ngo_impact_mvp_template.tex
-├── uploads/
-├── outputs/
+├── uploads/              # local input files
+├── outputs/              # generated artifacts
 ├── utils/
 │   └── helpers.py
 ├── requirements.txt
 └── README.md
-````
+```
 
 ---
 
-# Local installation
+## Local setup
 
-## 1. Clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/EL-K-Code/ngo-impact-mvp
+git clone https://github.com/EL-K-Code/ngo-impact-mvp.git
 cd ngo-impact-mvp
 ```
 
-## 2. Create and activate a virtual environment
+### 2. Create a virtual environment
 
-### Linux / macOS
+Linux or macOS:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### Windows PowerShell
+Windows PowerShell:
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-## 3. Install Python dependencies
+### 3. Install Python dependencies
 
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
----
+### 4. Install LaTeX
 
-# LaTeX / PDF requirements
+A working `pdflatex` installation is required.
 
-This project needs a working **pdfLaTeX** installation because the final report is compiled from a `.tex` template.
-
-## Option A — TeX Live on Ubuntu / Debian
+Ubuntu or Debian:
 
 ```bash
 sudo apt update
@@ -113,52 +153,23 @@ sudo apt install -y \
   texlive-latex-recommended \
   texlive-latex-extra \
   texlive-fonts-recommended \
-  texlive-fonts-extra \
   texlive-pictures \
   lmodern
 ```
 
-## Option B — TinyTeX / tlmgr users
-
-If you use TinyTeX, make sure your TeX repository matches your local TeX Live version.
-
-For TeX Live 2024, for example:
-
-```bash
-tlmgr init-usertree
-tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2024/tlnet-final
-```
-
-Then install the packages required by the template:
-
-```bash
-tlmgr install \
-  lato \
-  fontaxes \
-  tikzfill \
-  pdfcol \
-  enumitem \
-  lastpage \
-  parskip
-```
-
-## Verify pdfLaTeX
+Verify the installation:
 
 ```bash
 pdflatex --version
 ```
 
----
-
-# Run the app locally
-
-Start the Streamlit application:
+### 5. Run the application
 
 ```bash
 streamlit run app.py
 ```
 
-By default, Streamlit will open a local URL such as:
+The local interface is typically available at:
 
 ```text
 http://localhost:8501
@@ -166,35 +177,9 @@ http://localhost:8501
 
 ---
 
-# How to use the app
+## Generated artifacts
 
-1. Open the Streamlit interface
-2. Upload one or more NGO PDF reports
-3. Click **Generate standardized report**
-4. Wait for the pipeline to:
-
-   * extract text,
-   * normalize the payload,
-   * render LaTeX,
-   * compile the PDF
-5. Review:
-
-   * the generated PDF preview,
-   * extracted metrics,
-   * normalized JSON
-6. Download:
-
-   * PDF
-   * LaTeX
-   * JSON
-
----
-
-# Generated artifacts
-
-Each run creates files in the `outputs/` directory.
-
-Typical outputs:
+A successful run can create:
 
 ```text
 outputs/
@@ -206,58 +191,66 @@ outputs/
 └── standardized_report_pdflatex_stderr.txt
 ```
 
-These files are useful for:
-
-* debugging LaTeX compilation errors,
-* checking extracted values,
-* validating the generated report.
+These artifacts support both user review and technical debugging.
 
 ---
 
-# Notes about the current MVP
+## Design principles
 
-This repository is an MVP, not yet a finalized production tool.
+### Structured before generative
 
-At this stage:
+The pipeline creates a normalized intermediate representation before generating the final report. This makes it easier to validate extracted information and reuse it in other outputs.
 
-* the extraction pipeline works,
-* the JSON normalization works,
-* the LaTeX rendering works,
-* the PDF compilation works when the required TeX dependencies are installed,
-* some parts of the editorial template may still require refinement or stronger backend binding depending on the current template version.
+### Reviewable outputs
 
-In other words:
+JSON, LaTeX and PDF are all exposed so that extracted values and editorial rendering can be inspected independently.
 
-* **technical proof of concept: yes**
-* **fully polished production workflow: not yet**
+### Honest uncertainty
+
+The current MVP does not assume that every PDF follows the same structure. Missing fields, section-detection errors and weak extraction should be visible rather than silently fabricated.
+
+### Local-first processing
+
+The current implementation is designed to run locally, which is useful when documents may contain sensitive organizational information.
 
 ---
 
-# Troubleshooting
+## Current boundaries
 
-## 1. `pdflatex: command not found`
+This is a technical proof of concept, not yet a production document-intelligence platform.
 
-Install TeX Live or TinyTeX correctly and verify with:
+Current limitations include:
+
+- extraction depends mainly on embedded PDF text;
+- scanned documents may require OCR;
+- section detection is heuristic;
+- some template placeholders may not yet be connected to every normalized field;
+- no page-level citation system;
+- no confidence score for extracted values;
+- no human validation workflow for individual fields;
+- no automated test suite or CI workflow;
+- no containerized production deployment;
+- no authentication, authorization or secure document-retention policy.
+
+---
+
+## Troubleshooting
+
+### `pdflatex: command not found`
+
+Install a LaTeX distribution and verify:
 
 ```bash
 pdflatex --version
 ```
 
-## 2. `LaTeX Error: File 'xxx.sty' not found`
+### Missing LaTeX package
 
-A LaTeX package is missing. Install it through TeX Live / TinyTeX.
+Install the package reported in the compilation log or install a broader TeX collection.
 
-Example:
+### No generated PDF
 
-```bash
-tlmgr install pdfcol
-```
-
-or install broader TeX collections on Linux.
-
-## 3. Streamlit runs but no PDF is generated
-
-Check these files:
+Inspect:
 
 ```text
 outputs/standardized_report.log
@@ -265,66 +258,58 @@ outputs/standardized_report_pdflatex_stdout.txt
 outputs/standardized_report_pdflatex_stderr.txt
 ```
 
-## 4. Preview works poorly in browser
+### Static placeholders remain in the output
 
-The app may render preview pages as images instead of raw embedded PDF, depending on browser behavior and sandbox restrictions.
-
-## 5. Upload works but placeholders still appear in the PDF
-
-That usually means the LaTeX template still contains static placeholders not yet fully connected to the normalized backend payload.
+This indicates that the template and normalized payload are not fully bound for those fields. The JSON output should be reviewed before changing the template or rendering code.
 
 ---
 
-# Suggested development workflow
+## Recommended next milestones
 
-A good local workflow is:
-
-```bash
-streamlit run app.py
-```
-
-Then, if PDF compilation fails:
-
-```bash
-pdflatex -interaction=nonstopmode -halt-on-error -output-directory=outputs outputs/standardized_report.tex
-```
-
-This makes LaTeX errors easier to inspect.
+1. add OCR and layout-aware extraction for scanned reports;
+2. define a versioned schema with field descriptions and validation rules;
+3. attach source-page references to extracted claims;
+4. expose confidence and extraction status for each field;
+5. add a human review screen before report generation;
+6. create a benchmark set of heterogeneous reports;
+7. measure field-level precision, recall and missing-value behaviour;
+8. add unit, integration and snapshot tests;
+9. containerize Python and LaTeX dependencies;
+10. add secure temporary-file handling and retention controls;
+11. support additional output templates and languages.
 
 ---
 
-# Deployment notes
+## Evaluation plan
 
-This project is easiest to deploy with **Docker + Railway** because it depends on both:
+A serious document-intelligence evaluation should report:
 
-* Python packages
-* TeX / LaTeX system packages
-
-A simpler deployment on Streamlit Community Cloud may work for lighter setups, but LaTeX-heavy environments are usually more reliable in Docker-based deployments.
-
----
-
-# Roadmap
-
-Planned improvements may include:
-
-* stronger backend binding for all template placeholders,
-* better country-focus formatting,
-* cleaner sector narrative generation,
-* improved PDF visual design,
-* stronger validation and confidence reporting,
-* containerized deployment.
+- field-level exact match and relaxed match;
+- precision and recall for detected sections;
+- missing-field detection;
+- unsupported-value rate;
+- page-citation accuracy;
+- robustness across native and scanned PDFs;
+- PDF compilation success rate;
+- human correction time compared with manual report creation.
 
 ---
 
-# License
+## What this project demonstrates
 
-Add your preferred license here.
+- document-processing pipeline design;
+- extraction-to-schema normalization;
+- validation before generation;
+- automated LaTeX report production;
+- local interactive application development;
+- understanding of reliability requirements for document AI.
 
-Example:
+---
 
-```text
-MIT License
-```
+## Author
 
+**Alex Komla LABOU**  
+Applied AI and Machine Learning Engineer — Research-Oriented
 
+- GitHub: [EL-K-Code](https://github.com/EL-K-Code)
+- LinkedIn: [komla-alex-labou](https://www.linkedin.com/in/komla-alex-labou/)
